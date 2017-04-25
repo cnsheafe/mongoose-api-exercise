@@ -1,23 +1,24 @@
 const express = require('express');
-const router = express.Router();
-
 const bodyParser = require('body-parser');
+// const mongoose = require('mongoose');
+const {blogPost} = require('./model');
+const {DATABASE_URL} = require('./config');
+
 const jsonParser = bodyParser.json();
+const router = express.Router();
+// mongoose.Promise = global.Promise;
 
-const {BlogPosts} = require('./model');
-
-BlogPosts.create(
-		"100 Ways to Rocket JUMP",
-		"This is the first blog post",
-		"Sir Hoppington III",
-		null
-);
-
-
-router.get('/',(req, res) => res.status(200).json(BlogPosts.get()) );
+// mongoose.connect(DATABASE_URL);
+router.get('/', (req, res) => {
+	blogPost.find().exec().then(allPosts => {
+		res.status(200).json({
+			allPosts: allPosts.map(post => post.showPost())
+		});
+	});
+});
 
 router.get('/:id', function (req, res) {
-	const post = BlogPosts.get(req.params.id);
+	const post = blogPost.get(req.params.id);
 	if( post.constructor === Array ) {
 		const msg = `Blog post with id:${req.params.id} does not exist`;
 		console.info(msg);
@@ -42,7 +43,7 @@ router.post('/', jsonParser, function(req, res) {
 		date = req.body.publishDate;
 	}
 
-	const post = BlogPosts.create(req.body.title, req.body.content, req.body.author, date);
+	const post = blogPost.create(req.body.title, req.body.content, req.body.author, date);
 	res.status(201).json(post);
 });
 
@@ -57,8 +58,8 @@ router.put('/:id', jsonParser, function(req, res) {
 			return res.status(400).send(msg);
 		}
 	}
-	for (let i = 0; i < BlogPosts.posts.length; i++) {
-		if(req.params.id === BlogPosts.posts[i].id) {
+	for (let i = 0; i < blogPost.posts.length; i++) {
+		if(req.params.id === blogPost.posts[i].id) {
 			break;
 
 		}
@@ -67,12 +68,12 @@ router.put('/:id', jsonParser, function(req, res) {
 			return res.status(400).send(msg);
 		}
 	}
-	res.status(204).json(BlogPosts.update(req.body));
+	res.status(204).json(blogPost.update(req.body));
 });
 
 router.delete('/:id', function(req,res) {
-	for (let i = 0; i < BlogPosts.posts.length; i++) {
-		if(req.params.id === BlogPosts.posts[i].id) {
+	for (let i = 0; i < blogPost.posts.length; i++) {
+		if(req.params.id === blogPost.posts[i].id) {
 			break;
 		}
 		else {
@@ -80,7 +81,7 @@ router.delete('/:id', function(req,res) {
 			return res.status(400).send(msg);
 		}
 	}
-	res.status(204).json(BlogPosts.delete(req.params.id));
+	res.status(204).json(blogPost.delete(req.params.id));
 });
 
 module.exports = router;
