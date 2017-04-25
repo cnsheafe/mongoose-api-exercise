@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const blogPostSchema = mongoose.Scheme({
+const blogPostSchema = mongoose.Schema({
 	title: {type: String, required: true},
 	content: {type: String, required: true},
 	author: {
@@ -23,6 +23,6 @@ blogPostSchema.methods.showPost = function() {
 		created: this.created || Date.now()
 	};
 };
-
-const blogPost = mongoose.model('blogPost', blogPostSchema);
+// first arg is the singular noun of the collection to connect to
+const blogPost = mongoose.model('Post', blogPostSchema);
 module.exports = {blogPost};
