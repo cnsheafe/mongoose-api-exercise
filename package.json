@@ -1,0 +1,32 @@
+{
+  "name": "mongoose-api-exercise",
+  "version": "1.0.0",
+  "description": "Manage a blog with Mongoose",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cnsheafe/mongoose-api-exercise.git"
+  },
+  "author": "Christofer Sheafe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cnsheafe/mongoose-api-exercise/issues"
+  },
+  "homepage": "https://github.com/cnsheafe/mongoose-api-exercise#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.6",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "faker": "^4.1.0",
+    "mocha": "^3.3.0"
+  }
+}
